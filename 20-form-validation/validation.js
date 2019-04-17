@@ -2,9 +2,10 @@ $(function() {
   var $width = $('#rectangle-width');
   var $height = $('#rectangle-height');
   var $calc = $('#rectangle-calc');
+  var blnValid = false;
 
   $calc.click(function() {
-    if(!validate('#rectangle-width') || !validate('#rectangle-height')) return;
+    if(!blnValid) return;
 
     var width  = Number($width.val()),
         height = Number($height.val()),
@@ -15,7 +16,13 @@ $(function() {
     $('#rectangle-area').val(a);
   });
 
-
+  $width.focusout(function() {
+    blnValid = validate('#rectangle-width');          
+  });
+    
+  $height.focusout(function() {
+    blnValid = validate('#rectangle-height');          
+  });
   /**
    * 小数点后面保留第 n 位
    * 
