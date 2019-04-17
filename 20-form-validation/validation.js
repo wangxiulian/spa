@@ -16,6 +16,14 @@ $(function() {
     $('#rectangle-area').val(a);
   });
 
+  $width.keypress(function(e) {
+    filterKey(e);          
+  });
+
+  $height.keypress(function(e) {
+    filterKey(e);          
+  });
+
   $width.focusout(function() {
     blnValid = validate('#rectangle-width');          
   });
@@ -33,6 +41,59 @@ $(function() {
   function roundFractional(x, n) {
     return Math.round(x * Math.pow(10, n)) / Math.pow(10, n);
   }
+
+  /**
+   * 验证文本框中输入的每个字符，过滤掉非法字符
+   *       
+   * @param e 按键事件
+   * @returns {undefined}
+   */
+  function filterKey(e) {
+    var pos = e.target.selectionStart,
+        content = e.target.value;
+
+    if(/[abcdf-zABCDF-Z`~!@#$%^&*()\-=_+[\]{}|;:'",<>/?\\]/.test(e.key)) {
+      e.preventDefault();
+      return;                 
+    }
+  
+    if(e.key === '.') {
+      if(pos === 0 || content.indexOf('.') !== -1) {
+        e.preventDefault();
+        return;                           
+      }
+
+      if(pos  === 1 && content.substring(0,1) === '-') {
+        e.preventDefault();
+        return;                    
+      }
+    }
+  
+    if(e.key === 'e') {
+      if(pos === 0 || content.indexOf('e') !== -1 || content.indexOf('E') !== -1) {
+        e.preventDefault();
+        return;                                     
+      }
+
+      if(pos === 1 && content.substring(0,1) === '-') {
+        e.preventDefault();
+        return;                                  
+      }              
+    }
+  
+    if(e.key === 'E') {
+      if(pos === 0 || content.indexOf('e') !== -1  || content.indexOf('E') !== -1) {
+        e.preventDefault();
+        return;                                      
+      }
+
+      if(pos === 1 && content.substring(0,1) === '-') {
+        e.preventDefault();
+        return;                                  
+      }   
+    }
+  }
+
 
   /**
    * 对字段进行数据合法性校验
